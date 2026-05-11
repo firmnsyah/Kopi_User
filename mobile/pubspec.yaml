@@ -1,0 +1,41 @@
+name: kopi_user
+description: Kopi User POS - mobile app
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  provider: ^6.1.2
+  intl: ^0.19.0
+  fl_chart: ^0.68.0
+  uuid: ^4.4.0
+  supabase_flutter: ^2.5.0
+  shared_preferences: ^2.2.3
+  image_picker: ^1.1.2
+  pdf: ^3.11.1
+  printing: ^5.13.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+dependency_overrides:
+  path_provider_foundation: 2.4.0
+  path_provider_android: 2.2.10
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Epilogue
+      fonts:
+        - asset: fonts/Epilogue-VariableFont_wght.ttf
+    - family: WorkSans
+      fonts:
+        - asset: fonts/WorkSans-VariableFont_wght.ttf

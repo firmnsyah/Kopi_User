@@ -1,0 +1,24 @@
+-- ============================================================
+-- Seed: Buat karyawan via Supabase Auth
+-- Jalankan SETELAH migration 001_initial.sql
+--
+-- Cara: Supabase Dashboard → Authentication → Add User
+--   Email   : roaster-01@kopi.local
+--   Password: 1234
+--   Metadata: {"employee_id": "ROASTER-01", "name": "Roaster", "role": "admin"}
+--
+--   Email   : barista-01@kopi.local
+--   Password: 0000
+--   Metadata: {"employee_id": "BARISTA-01", "name": "Barista", "role": "staff"}
+--
+-- ATAU gunakan Service Role Key dengan script di bawah ini
+-- (jalankan via Supabase SQL Editor dengan service_role context):
+-- ============================================================
+
+-- Contoh insert langsung ke auth.users (gunakan hanya di environment dev)
+-- SELECT auth.create_user(
+--   uid          => gen_random_uuid(),
+--   email        => 'roaster-01@kopi.local',
+--   password     => '1234',
+--   user_metadata => '{"employee_id":"ROASTER-01","name":"Roaster","role":"admin"}'::jsonb
+-- );
