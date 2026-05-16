@@ -9,6 +9,7 @@ import '../models/product.dart';
 import '../models/transaction.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../utils/connectivity.dart';
 import '../utils/formatters.dart';
 import '../widgets/app_toast.dart';
 
@@ -141,6 +142,13 @@ class _InputScreenState extends State<InputScreen> {
         showAppToast(context, 'Pilih kategori terlebih dahulu', error: true);
         return;
       }
+    }
+
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      showAppToast(context, 'Tidak ada koneksi internet', error: true);
+      return;
     }
 
     setState(() => _saving = true);

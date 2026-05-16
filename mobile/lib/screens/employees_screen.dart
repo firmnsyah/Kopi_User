@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../data/repository.dart';
 import '../models/employee.dart';
+import '../utils/connectivity.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
@@ -27,6 +28,13 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      setState(() => _loading = false);
+      showAppToast(context, 'Tidak ada koneksi internet', error: true);
+      return;
+    }
     final list = await context.read<Repository>().getEmployees();
     if (!mounted) return;
     setState(() {
@@ -131,6 +139,13 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
       ),
     );
     if (confirm != true || !mounted) return;
+
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      showAppToast(context, 'Tidak ada koneksi internet', error: true);
+      return;
+    }
 
     try {
       final res = await context
@@ -400,6 +415,13 @@ class _EmployeeFormState extends State<_EmployeeForm> {
     }
     if (_isEdit && pin.isNotEmpty && pin.length != 4) {
       _err('PIN baru harus 4 digit.');
+      return;
+    }
+
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      _err('Tidak ada koneksi internet.');
       return;
     }
 

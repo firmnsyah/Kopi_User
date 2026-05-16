@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../data/repository.dart';
 import '../state/session.dart' show AppSession;
+import '../utils/connectivity.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
@@ -58,6 +59,14 @@ class _LoginScreenState extends State<LoginScreen>
     if (_pin.length < _maxPinLength) {
       _shakeCtrl.forward(from: 0);
       showAppToast(context, 'PIN harus 4 digit', error: true);
+      return;
+    }
+
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      _shakeCtrl.forward(from: 0);
+      showAppToast(context, 'Tidak ada koneksi internet', error: true);
       return;
     }
 

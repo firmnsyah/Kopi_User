@@ -6,7 +6,9 @@ import '../models/transaction.dart';
 import '../state/session.dart' show AppSession;
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../utils/connectivity.dart';
 import '../utils/formatters.dart';
+import '../widgets/app_toast.dart';
 import '../widgets/filter_chip_widget.dart';
 import 'employees_screen.dart';
 import 'history_screen.dart';
@@ -33,6 +35,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      setState(() => _loading = false);
+      showAppToast(context, 'Tidak ada koneksi internet', error: true);
+      return;
+    }
     final repo = context.read<Repository>();
     final d = await repo.getDashboard(_filter);
     if (!mounted) return;
@@ -49,6 +58,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 
   Future<void> _logout() async {
+    final online = await hasConnection();
+    if (!mounted) return;
+    if (!online) {
+      showAppToast(context, 'Tidak ada koneksi internet', error: true);
+      return;
+    }
     await context.read<AppSession>().signOut();
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
@@ -115,7 +130,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
       ),
       child: Row(
         children: [
-          Icon(Icons.person_outline_rounded,
+          const Icon(Icons.person_outline_rounded,
               size: 15, color: AppColors.secondary),
           const SizedBox(width: 8),
           Text(

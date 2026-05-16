@@ -5,14 +5,14 @@ import 'package:kopi_user/state/session.dart';
 
 void main() {
   testWidgets('Login screen renders when no session', (tester) async {
-    final session = Session();
+    final session = AppSession(supabaseMode: false);
     await tester.pumpWidget(KopiUserApp(
       repository: MockRepository(),
       session: session,
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('Kopi User'), findsOneWidget);
+    expect(find.text('EMPLOYEE ID'), findsOneWidget);
     expect(find.text('Clock In'), findsOneWidget);
   });
 }

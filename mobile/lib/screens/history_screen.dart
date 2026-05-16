@@ -186,7 +186,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
       child: Row(
         children: [
-          Icon(Icons.person_outline_rounded,
+          const Icon(Icons.person_outline_rounded,
               size: 15, color: AppColors.secondary),
           const SizedBox(width: 8),
           Text(
@@ -207,11 +207,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(Icons.arrow_back,
+                Icon(Icons.arrow_back,
                     color: AppColors.secondary, size: 24),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
               ],
             ),
           ),
