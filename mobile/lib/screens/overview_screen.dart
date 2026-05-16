@@ -129,22 +129,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   Widget _topBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              const Icon(Icons.coffee, color: AppColors.primary, size: 24),
-              const SizedBox(width: 8),
-              Text('KOPI USER',
-                  style: AppTheme.headline(
-                    size: 16,
-                    weight: FontWeight.w800,
-                    color: AppColors.primary,
-                    letterSpacing: -0.5,
-                  )),
-            ],
+          Image.asset(
+            'assets/images/navbar_logo.png',
+            height: 66,
           ),
           Row(
             children: [

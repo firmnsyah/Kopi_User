@@ -87,33 +87,38 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Kopi User',
-                      style: AppTheme.headline(
-                        size: 44,
-                        weight: FontWeight.w900,
-                        color: AppColors.primary,
-                      )),
-                  const SizedBox(height: 8),
-                  const SizedBox(height: 24),
-                  _employeeIdField(),
-                  const SizedBox(height: 20),
-                  _pinIndicator(),
-                  const SizedBox(height: 20),
-                  _keypad(),
-                  const SizedBox(height: 16),
-                  _clockInButton(),
-                ],
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight - 24),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 420),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/login_logo.png',
+                          height: 100,
+                        ),
+                        const SizedBox(height: 48),
+                        _employeeIdField(),
+                        const SizedBox(height: 20),
+                        _pinIndicator(),
+                        const SizedBox(height: 20),
+                        _keypad(),
+                        const SizedBox(height: 16),
+                        _clockInButton(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

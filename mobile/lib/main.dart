@@ -11,18 +11,23 @@ import 'state/session.dart';
 import 'theme/app_theme.dart';
 
 // ── Konfigurasi ────────────────────────────────────────────────────────────
-// Ganti ke false untuk pakai Supabase
 const bool kUseMock = false;
 
-// Isi dengan URL dan anon key dari Supabase Dashboard → Settings → API
-const String kSupabaseUrl = 'https://muprbsagrcydwjjmtvgn.supabase.co';
-const String kSupabaseAnonKey = 'sb_publishable_gr9iXuGmumtyc5kIBqolJQ_O4b-fsof';
+// Nilai diinjeksi saat build via --dart-define-from-file=.env.json
+// Jangan hardcode kredensial di sini. Lihat .env.json.example.
+const String kSupabaseUrl = String.fromEnvironment('SUPABASE_URL');
+const String kSupabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 // ──────────────────────────────────────────────────────────────────────────
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (!kUseMock) {
+    assert(
+      kSupabaseUrl.isNotEmpty && kSupabaseAnonKey.isNotEmpty,
+      'Jalankan dengan: flutter run --dart-define-from-file=.env.json\n'
+      'Salin .env.json.example → .env.json lalu isi kredensial Supabase.',
+    );
     await Supabase.initialize(
       url: kSupabaseUrl,
       anonKey: kSupabaseAnonKey,
