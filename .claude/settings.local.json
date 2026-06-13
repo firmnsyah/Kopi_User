@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(Get-ChildItem \"e:\\\\Portofolio\\\\Kopi User\\\\mobile\\\\test\" | ForEach-Object { \"$\\($_.Name\\)\" })"
-    ]
-  }
-}

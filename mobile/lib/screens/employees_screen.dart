@@ -516,7 +516,7 @@ class _EmployeeFormState extends State<_EmployeeForm> {
             height: 48,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                gradient: AppColors.primaryButtonGradient,
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Material(

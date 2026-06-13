@@ -678,7 +678,7 @@ class _InputScreenState extends State<InputScreen> {
       height: 56,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: AppColors.primaryButtonGradient,
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(14),
           boxShadow: const [
             BoxShadow(

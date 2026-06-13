@@ -218,22 +218,22 @@ class _OverviewScreenState extends State<OverviewScreen> {
       children: [
         Expanded(
             child: _summary('Pemasukan', d.totalIncome,
-                gradient: AppColors.incomeGradient, color: Colors.white)),
+                background: AppColors.incomeColor, color: Colors.white)),
         const SizedBox(width: 12),
         Expanded(
             child: _summary('Pengeluaran', d.totalExpense,
-                gradient: AppColors.expenseGradient,
+                background: AppColors.expenseColor,
                 color: const Color(0xFF3A3220))),
       ],
     );
   }
 
   Widget _summary(String label, int value,
-      {required Gradient gradient, required Color color}) {
+      {required Color background, required Color color}) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        gradient: gradient,
+        color: background,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Column(
@@ -261,7 +261,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: isLoss ? AppColors.lossGradient : AppColors.profitGradient,
+        color: isLoss ? AppColors.lossColor : AppColors.profitColor,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
@@ -356,9 +356,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
                           widthFactor: 1,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              gradient: isActive
-                                  ? AppColors.chartBarActiveGradient
-                                  : AppColors.chartBarGradient,
+                              color: isActive
+                                  ? AppColors.chartBarActiveColor
+                                  : AppColors.chartBarColor,
                               borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(4),
                                 bottom: Radius.circular(2),
@@ -409,7 +409,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   Widget _hBar({
     required double fraction,
-    required List<Color> colors,
+    required Color color,
     double height = 8,
   }) {
     return ClipRRect(
@@ -426,11 +426,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               child: FractionallySizedBox(
                 widthFactor: fraction.clamp(0.0, 1.0),
                 heightFactor: 1.0,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: colors),
-                  ),
-                ),
+                child: ColoredBox(color: color),
               ),
             ),
           ],
@@ -444,11 +440,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
       ..sort((a, b) => b.value.compareTo(a.value));
     final maxQty = entries.isEmpty ? 1 : entries.first.value;
     const palette = [
-      [Color(0xFF223628), Color(0xFF3A8F52)],
-      [Color(0xFF492B08), Color(0xFFA0845C)],
-      [Color(0xFF1A5276), Color(0xFF5DADE2)],
-      [Color(0xFF77574D), Color(0xFFB08A7E)],
-      [Color(0xFFC3C8C1), Color(0xFFA0A5A0)],
+      Color(0xFF223628),
+      Color(0xFF492B08),
+      Color(0xFF1A5276),
+      Color(0xFF77574D),
+      Color(0xFFC3C8C1),
     ];
 
     return _whiteCard(
@@ -502,7 +498,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       ],
                     ),
                     const SizedBox(height: 6),
-                    _hBar(fraction: w, colors: colors),
+                    _hBar(fraction: w, color: colors),
                   ],
                 ),
               );
@@ -527,23 +523,18 @@ class _OverviewScreenState extends State<OverviewScreen> {
           Text('Volume Transaksi', style: AppTheme.headline(size: 16)),
           const SizedBox(height: 16),
           _volumeRow(Icons.qr_code_2, AppColors.primary, 'QRIS', qris,
-              pct(qris), const [Color(0xFF223628), Color(0xFF3A8F52)]),
+              pct(qris), AppColors.primary),
           _volumeRow(Icons.payments, AppColors.tertiary, 'Tunai', tunai,
-              pct(tunai), const [Color(0xFFA0845C), Color(0xFFC4A97A)]),
-          _volumeRow(
-              Icons.sync_alt,
-              AppColors.secondary,
-              'Transfer',
-              transfer,
-              pct(transfer),
-              const [Color(0xFF494949), Color(0xFF888888)]),
+              pct(tunai), AppColors.tertiary),
+          _volumeRow(Icons.sync_alt, AppColors.secondary, 'Transfer', transfer,
+              pct(transfer), AppColors.secondary),
         ],
       ),
     );
   }
 
   Widget _volumeRow(IconData icon, Color iconColor, String name, int count,
-      double percent, List<Color> barColors) {
+      double percent, Color barColor) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Column(
@@ -579,7 +570,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          _hBar(fraction: percent, colors: barColors),
+          _hBar(fraction: percent, color: barColor),
         ],
       ),
     );
@@ -589,7 +580,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     final ec = d.expenseCats;
     final total = d.totalExpense;
     Widget row(IconData icon, Color color, String name, int amount,
-        List<Color> barColors) {
+        Color barColor) {
       final w = total > 0 ? amount / total : 0.0;
       return Padding(
         padding: const EdgeInsets.only(bottom: 12),
@@ -618,7 +609,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               ],
             ),
             const SizedBox(height: 6),
-            _hBar(fraction: w, colors: barColors),
+            _hBar(fraction: w, color: barColor),
           ],
         ),
       );
@@ -630,30 +621,14 @@ class _OverviewScreenState extends State<OverviewScreen> {
         children: [
           Text('Pengeluaran', style: AppTheme.headline(size: 16)),
           const SizedBox(height: 16),
-          row(
-              Icons.inventory_2,
-              AppColors.primary,
-              'Bahan Baku',
-              ec['Bahan Baku'] ?? 0,
-              const [Color(0xFF223628), Color(0xFF3A8F52)]),
-          row(
-              Icons.bolt,
-              AppColors.tertiary,
-              'Operasional',
-              ec['Operasional'] ?? 0,
-              const [Color(0xFF492B08), Color(0xFFA0845C)]),
-          row(
-              Icons.group,
-              AppColors.secondary,
-              'Gaji Staff',
-              ec['Gaji Staff'] ?? 0,
-              const [Color(0xFF77574D), Color(0xFFB08A7E)]),
-          row(
-              Icons.more_horiz,
-              AppColors.outlineVariant,
-              'Lain-lain',
-              ec['Lain-lain'] ?? 0,
-              const [Color(0xFFC3C8C1), Color(0xFFA0A5A0)]),
+          row(Icons.inventory_2, AppColors.primary, 'Bahan Baku',
+              ec['Bahan Baku'] ?? 0, AppColors.primary),
+          row(Icons.bolt, AppColors.tertiary, 'Operasional',
+              ec['Operasional'] ?? 0, AppColors.tertiary),
+          row(Icons.group, AppColors.secondary, 'Gaji Staff',
+              ec['Gaji Staff'] ?? 0, AppColors.secondary),
+          row(Icons.more_horiz, AppColors.outlineVariant, 'Lain-lain',
+              ec['Lain-lain'] ?? 0, AppColors.outlineVariant),
         ],
       ),
     );
@@ -816,7 +791,7 @@ class _Fab extends StatelessWidget {
       width: 60,
       height: 60,
       decoration: BoxDecoration(
-        gradient: AppColors.primaryButtonGradient,
+        color: AppColors.primary,
         borderRadius: BorderRadius.circular(18),
         boxShadow: const [
           BoxShadow(
