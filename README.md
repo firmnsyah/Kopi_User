@@ -53,16 +53,16 @@ Gunakan chip filter di bagian atas untuk memilih rentang data:
 
 ### Kartu Ringkasan
 
-- **Pemasukan** — Total pendapatan dari penjualan
-- **Pengeluaran** — Total biaya operasional
-- **Profit / Rugi** — Selisih pemasukan dikurangi pengeluaran (hijau = untung, merah = rugi)
+- **Pemasukan** - Total pendapatan dari penjualan
+- **Pengeluaran** - Total biaya operasional
+- **Profit / Rugi** - Selisih pemasukan dikurangi pengeluaran (hijau = untung, merah = rugi)
 
 ### Grafik & Visualisasi
 
-- **Distribusi Transaksi** — Grafik distribusi transaksi berdasarkan waktu
-- **Peringkat Produk** — Produk terlaris berdasarkan jumlah terjual
-- **Volume Pembayaran** — Perbandingan metode bayar: QRIS, Tunai, Transfer
-- **Kategori Pengeluaran** — Rincian pengeluaran per kategori (Bahan Baku, Gaji, dll.)
+- **Distribusi Transaksi** - Grafik distribusi transaksi berdasarkan waktu
+- **Peringkat Produk** - Produk terlaris berdasarkan jumlah terjual
+- **Volume Pembayaran** - Perbandingan metode bayar: QRIS, Tunai, Transfer
+- **Kategori Pengeluaran** - Rincian pengeluaran per kategori (Bahan Baku, Gaji, dll.)
 
 ### Transaksi Terbaru
 
@@ -220,8 +220,8 @@ Semua karyawan aktif dan nonaktif ditampilkan dalam daftar beserta status masing
 | Catat Transaksi | ✓ | ✓ |
 | Lihat Riwayat | ✓ | ✓ |
 | Ekspor PDF | ✓ | ✓ |
-| Lihat data semua karyawan | — | ✓ |
-| Kelola Karyawan | — | ✓ |
+| Lihat data semua karyawan | X | ✓ |
+| Kelola Karyawan | X | ✓ |
 
 > Staff hanya dapat melihat transaksi yang dicatatnya sendiri. Admin dapat melihat seluruh data transaksi semua karyawan.
 
@@ -302,5 +302,3 @@ Kopi User/
 ```
 
 ---
-
-*Dibuat dengan Flutter & Supabase — untuk manajemen kedai kopi yang lebih mudah.*
