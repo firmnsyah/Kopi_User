@@ -50,7 +50,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   onTap: () => Navigator.of(context).pop(),
                   child: Row(
                     children: [
-                      const Icon(Icons.arrow_back,
+                      Icon(Icons.arrow_back,
                           color: AppColors.secondary, size: 22),
                       const SizedBox(width: 8),
                       Text('KEMBALI KE RIWAYAT',
@@ -99,7 +99,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
             color: AppColors.outlineVariant.withValues(alpha: 0.3)),
@@ -138,7 +138,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 letterSpacing: -1,
               )),
           const SizedBox(height: 24),
-          const Divider(color: AppColors.outlineVariant),
+          Divider(color: AppColors.outlineVariant),
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,7 +163,7 @@ class _DetailScreenState extends State<DetailScreen> {
             const SizedBox(height: 16),
             Row(
               children: [
-                const Icon(Icons.description,
+                Icon(Icons.description,
                     size: 14, color: AppColors.secondary),
                 const SizedBox(width: 6),
                 Text('CATATAN', style: AppTheme.label()),
@@ -211,7 +211,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
             color: AppColors.outlineVariant.withValues(alpha: 0.3)),
@@ -221,7 +221,7 @@ class _DetailScreenState extends State<DetailScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.image, size: 14, color: AppColors.secondary),
+              Icon(Icons.image, size: 14, color: AppColors.secondary),
               const SizedBox(width: 6),
               Text('BUKTI PEMBAYARAN', style: AppTheme.label()),
             ],

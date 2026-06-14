@@ -11,7 +11,7 @@ class AppTheme {
   static TextStyle headline({
     double size = 16,
     FontWeight weight = FontWeight.w800,
-    Color color = AppColors.onSurface,
+    Color? color,
     double? height,
     double? letterSpacing,
   }) {
@@ -19,7 +19,7 @@ class AppTheme {
       fontFamily: _headlineFamily,
       fontSize: size + _sizeBoost,
       fontWeight: weight,
-      color: color,
+      color: color ?? AppColors.onSurface,
       height: height,
       letterSpacing: letterSpacing,
     );
@@ -28,7 +28,7 @@ class AppTheme {
   static TextStyle body({
     double size = 14,
     FontWeight weight = FontWeight.w400,
-    Color color = AppColors.onSurface,
+    Color? color,
     double? height,
     double? letterSpacing,
   }) {
@@ -36,7 +36,7 @@ class AppTheme {
       fontFamily: _bodyFamily,
       fontSize: size + _sizeBoost,
       fontWeight: weight,
-      color: color,
+      color: color ?? AppColors.onSurface,
       height: height,
       letterSpacing: letterSpacing,
     );
@@ -45,56 +45,77 @@ class AppTheme {
   static TextStyle label({
     double size = 10,
     FontWeight weight = FontWeight.w700,
-    Color color = AppColors.secondary,
+    Color? color,
   }) {
     return TextStyle(
       fontFamily: _bodyFamily,
       fontSize: size + _sizeBoost,
       fontWeight: weight,
-      color: color,
+      color: color ?? AppColors.secondary,
       letterSpacing: 1.6,
     );
   }
 
-  static ThemeData light() {
-    final base = ThemeData.light(useMaterial3: true);
+  static ThemeData light() => _build(Brightness.light);
+  static ThemeData dark() => _build(Brightness.dark);
+
+  static ThemeData _build(Brightness brightness) {
+    final isDark = brightness == Brightness.dark;
+    final base = ThemeData(brightness: brightness, useMaterial3: true);
+
+    // Warna tema dibaca dari palet sesuai brightness yang diminta — bukan dari
+    // AppColors.brightness global, karena light() & dark() dibangun bersamaan.
+    final surface = isDark ? const Color(0xFF141310) : const Color(0xFFFFFFFF);
+    final onSurface = isDark ? const Color(0xFFECE6DE) : const Color(0xFF1E1B17);
+    final primary = isDark ? const Color(0xFF3E8C5C) : const Color(0xFF223628);
+    final secondary = isDark ? const Color(0xFFB5ACA2) : const Color(0xFF3D3733);
+    final error = isDark ? const Color(0xFFEF5350) : const Color(0xFFC62828);
+    final outline = isDark ? const Color(0xFF45413A) : const Color(0xFFC3C8C1);
+    final fill = isDark ? const Color(0xFF1E1C16) : Colors.white;
+
     return base.copyWith(
-      scaffoldBackgroundColor: AppColors.surface,
-      colorScheme: const ColorScheme.light(
-        primary: AppColors.primary,
-        onPrimary: AppColors.onPrimary,
-        secondary: AppColors.secondary,
-        surface: AppColors.surface,
-        onSurface: AppColors.onSurface,
-        error: AppColors.error,
+      scaffoldBackgroundColor: surface,
+      colorScheme: ColorScheme(
+        brightness: brightness,
+        primary: primary,
+        onPrimary: Colors.white,
+        secondary: secondary,
+        onSecondary: Colors.white,
+        surface: surface,
+        onSurface: onSurface,
+        error: error,
+        onError: Colors.white,
       ),
-      textTheme: base.textTheme
-          .apply(fontFamily: _bodyFamily)
-          .apply(
-            bodyColor: AppColors.onSurface,
-            displayColor: AppColors.onSurface,
+      textTheme: base.textTheme.apply(fontFamily: _bodyFamily).apply(
+            bodyColor: onSurface,
+            displayColor: onSurface,
           ),
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.primary,
+        backgroundColor: surface,
+        foregroundColor: primary,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: headline(size: 18, color: AppColors.primary),
+        titleTextStyle: TextStyle(
+          fontFamily: _headlineFamily,
+          fontSize: 18 + _sizeBoost,
+          fontWeight: FontWeight.w800,
+          color: primary,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: fill,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.outlineVariant),
+          borderSide: BorderSide(color: outline),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.outlineVariant),
+          borderSide: BorderSide(color: outline),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: primary, width: 1.5),
         ),
       ),
     );

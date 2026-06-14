@@ -186,7 +186,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.person_outline_rounded,
+          Icon(Icons.person_outline_rounded,
               size: 15, color: AppColors.secondary),
           const SizedBox(width: 8),
           Text(
@@ -207,11 +207,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: const Row(
+            child: Row(
               children: [
                 Icon(Icons.arrow_back,
                     color: AppColors.secondary, size: 24),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
               ],
             ),
           ),
@@ -291,7 +291,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget _typeFilters() {
     Widget chip(String label, TxType? value, IconData? icon, Color? activeBg) {
       final active = _typeFilter == value;
-      final bg = active ? (activeBg ?? AppColors.primary) : Colors.white;
+      final bg = active ? (activeBg ?? AppColors.primary) : AppColors.card;
       final fg = active ? Colors.white : AppColors.secondary;
       return GestureDetector(
         onTap: () => _setTypeFilter(value),
@@ -393,7 +393,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.card,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                   color: AppColors.outlineVariant.withValues(alpha: 0.5)),
@@ -468,7 +468,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
                 const SizedBox(height: 16),
                 ListTile(
-                  leading: const Icon(Icons.edit, color: AppColors.primary),
+                  leading: Icon(Icons.edit, color: AppColors.primary),
                   title: Text('Edit',
                       style: AppTheme.body(weight: FontWeight.w600)),
                   onTap: () async {
@@ -481,7 +481,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.delete, color: AppColors.error),
+                  leading: Icon(Icons.delete, color: AppColors.error),
                   title: Text('Hapus',
                       style: AppTheme.body(
                           weight: FontWeight.w600, color: AppColors.error)),
@@ -500,7 +500,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                           TextButton(
                             onPressed: () => Navigator.pop(c, true),
-                            child: const Text('Hapus',
+                            child: Text('Hapus',
                                 style: TextStyle(color: AppColors.error)),
                           ),
                         ],

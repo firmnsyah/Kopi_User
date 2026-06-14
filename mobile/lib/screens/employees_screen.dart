@@ -88,7 +88,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: const Icon(Icons.arrow_back,
+            child: Icon(Icons.arrow_back,
                 color: AppColors.secondary, size: 24),
           ),
           const SizedBox(width: 12),
@@ -233,7 +233,7 @@ class _EmployeeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: e.active
@@ -298,7 +298,7 @@ class _EmployeeCard extends StatelessWidget {
           // Actions
           IconButton(
             onPressed: onEdit,
-            icon: const Icon(Icons.edit, size: 20, color: AppColors.primary),
+            icon: Icon(Icons.edit, size: 20, color: AppColors.primary),
             tooltip: 'Edit',
             visualDensity: VisualDensity.compact,
           ),

@@ -224,7 +224,7 @@ class _InputScreenState extends State<InputScreen> {
             onTap: () => Navigator.of(context).pop(),
             child: Row(
               children: [
-                const Icon(Icons.arrow_back,
+                Icon(Icons.arrow_back,
                     color: AppColors.secondary, size: 24),
                 const SizedBox(width: 8),
                 Text('KEMBALI',
@@ -339,7 +339,7 @@ class _InputScreenState extends State<InputScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: picked
@@ -473,7 +473,7 @@ class _InputScreenState extends State<InputScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
-                  color: active ? AppColors.primary : Colors.white,
+                  color: active ? AppColors.primary : AppColors.card,
                   borderRadius: BorderRadius.circular(99),
                   border: Border.all(
                     color: active
@@ -512,7 +512,7 @@ class _InputScreenState extends State<InputScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
-                  color: active ? AppColors.primary : Colors.white,
+                  color: active ? AppColors.primary : AppColors.card,
                   borderRadius: BorderRadius.circular(99),
                   border: Border.all(
                     color: active
@@ -581,7 +581,7 @@ class _InputScreenState extends State<InputScreen> {
                     child: Container(
                       width: 32,
                       height: 32,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.error,
                         shape: BoxShape.circle,
                       ),
@@ -619,7 +619,7 @@ class _InputScreenState extends State<InputScreen> {
 
   Widget _pickerBtn(IconData icon, String label, VoidCallback onTap) {
     return Material(
-      color: Colors.white,
+      color: AppColors.card,
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         onTap: onTap,

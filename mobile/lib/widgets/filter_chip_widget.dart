@@ -26,7 +26,7 @@ class FilterChipBtn extends StatelessWidget {
           border: Border.all(
             color: active
                 ? AppColors.primary
-                : Colors.black.withValues(alpha: 0.1),
+                : AppColors.outlineVariant.withValues(alpha: 0.5),
           ),
           borderRadius: BorderRadius.circular(100),
         ),

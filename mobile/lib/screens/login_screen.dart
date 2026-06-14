@@ -151,13 +151,13 @@ class _LoginScreenState extends State<LoginScreen>
                 size: 22,
                 color: AppColors.outlineVariant.withValues(alpha: 0.5)),
             filled: false,
-            border: const UnderlineInputBorder(
+            border: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.outlineVariant, width: 2),
             ),
-            enabledBorder: const UnderlineInputBorder(
+            enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.outlineVariant, width: 2),
             ),
-            focusedBorder: const UnderlineInputBorder(
+            focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.primary, width: 2),
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen>
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(color: AppColors.primary, width: 2),
               ),
@@ -252,9 +252,11 @@ class _LoginScreenState extends State<LoginScreen>
     String? label,
     IconData? icon,
     required VoidCallback onTap,
-    Color background = AppColors.surfaceContainerLow,
-    Color color = AppColors.primary,
+    Color? background,
+    Color? color,
   }) {
+    background ??= AppColors.surfaceContainerLow;
+    color ??= AppColors.primary;
     return Material(
       color: background,
       borderRadius: BorderRadius.circular(10),

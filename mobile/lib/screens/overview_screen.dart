@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../data/repository.dart';
 import '../models/transaction.dart';
 import '../state/session.dart' show AppSession;
+import '../state/theme_controller.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../utils/connectivity.dart';
@@ -74,6 +75,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<ThemeController>(); // rebuild saat tema berganti
     return Scaffold(
       floatingActionButton: _Fab(onTap: () async {
         await Navigator.of(context)
@@ -130,7 +132,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.person_outline_rounded,
+          Icon(Icons.person_outline_rounded,
               size: 15, color: AppColors.secondary),
           const SizedBox(width: 8),
           Text(
@@ -154,6 +156,22 @@ class _OverviewScreenState extends State<OverviewScreen> {
           ),
           Row(
             children: [
+              GestureDetector(
+                onTap: () => context.read<ThemeController>().toggle(),
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                  child: Icon(
+                    context.watch<ThemeController>().isDark
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                    color: AppColors.secondary,
+                    size: 24,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
               if (context.watch<AppSession>().isAdmin) ...[
                 GestureDetector(
                   onTap: () => Navigator.of(context).push(
@@ -161,8 +179,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
                         builder: (_) => const EmployeesScreen()),
                   ),
                   behavior: HitTestBehavior.opaque,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     child: Icon(Icons.group,
                         color: AppColors.secondary, size: 24),
                   ),
@@ -172,10 +191,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
               GestureDetector(
                 onTap: _logout,
                 behavior: HitTestBehavior.opaque,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                  child:
-                      Icon(Icons.logout, color: AppColors.secondary, size: 24),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                  child: Icon(Icons.logout,
+                      color: AppColors.secondary, size: 24),
                 ),
               ),
             ],
@@ -420,7 +440,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            const ColoredBox(color: AppColors.surfaceContainerHighest),
+            ColoredBox(color: AppColors.surfaceContainerHighest),
             Align(
               alignment: Alignment.centerLeft,
               child: FractionallySizedBox(
@@ -739,7 +759,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(18),
         boxShadow: const [
           BoxShadow(
