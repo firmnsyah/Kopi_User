@@ -35,9 +35,23 @@ class Transaction {
       notes: (j['notes'] as String?) ?? '',
       createdAt: _parseUtc((j['created_at'] ?? j['createdAt']) as String).toLocal(),
       buktiPath: (j['bukti_url'] ?? j['buktiUrl']) as String?,
-      employeeId: j['employee_id'] as String?,
+      employeeId: (j['employee_id'] ?? j['employeeId']) as String?,
     );
   }
+
+  /// Serialisasi untuk cache lokal (key camelCase, dibaca balik oleh fromJson).
+  Map<String, dynamic> toJson() => {
+        'txId': id,
+        'type': type.name,
+        'amount': amount,
+        'category': category,
+        'method': method,
+        'notes': notes,
+        // Simpan sebagai UTC (akhiran Z) agar round-trip waktu tetap akurat.
+        'createdAt': createdAt.toUtc().toIso8601String(),
+        'buktiUrl': buktiPath,
+        'employeeId': employeeId,
+      };
 
   static DateTime _parseUtc(String dateStr) {
     if (!dateStr.endsWith('Z') && !dateStr.contains('+') && !dateStr.contains(RegExp(r'-[0-9]{2}:'))) {
@@ -73,6 +87,21 @@ class DashboardData {
   });
 
   int get profit => totalIncome - totalExpense;
+
+  /// Serialisasi untuk cache lokal (mode offline).
+  Map<String, dynamic> toJson() => {
+        'totalIncome': totalIncome,
+        'totalExpense': totalExpense,
+        'volume': volume,
+        'expenseCats': expenseCats,
+        'productSales': productSales,
+        'distributionMode': distributionMode,
+        'chartBars': chartBars,
+        'chartTooltips': chartTooltips,
+        'chartXLabels':
+            chartXLabels.map((e) => {'label': e.label, 'pos': e.pos}).toList(),
+        'recent': recent.map((e) => e.toJson()).toList(),
+      };
 
   factory DashboardData.fromJson(Map<String, dynamic> j) {
     List<int> bars = (j['chartBars'] as List).map((e) => (e as num).toInt()).toList();

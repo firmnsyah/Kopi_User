@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../data/local_cache.dart';
 import '../data/repository.dart';
 import '../models/transaction.dart';
 import '../state/session.dart' show AppSession;
+import '../utils/connectivity.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../utils/formatters.dart';
@@ -29,6 +31,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   List<Transaction>? _data;
   bool _loading = true;
+  bool _offline = false;
 
   @override
   void initState() {
@@ -39,17 +42,45 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Future<void> _load() async {
     setState(() => _loading = true);
     final repo = context.read<Repository>();
-    final r = await repo.getDetailedHistory(HistoryQuery(
-      mode: _filter,
-      start: _customStart,
-      end: _customEnd,
-      type: _typeFilter,
-    ));
+    final online = await hasConnection();
+    if (!mounted) return;
+
+    if (online) {
+      try {
+        final r = await repo.getDetailedHistory(HistoryQuery(
+          mode: _filter,
+          start: _customStart,
+          end: _customEnd,
+          type: _typeFilter,
+        ));
+        await LocalCache.saveHistory(_filter, _typeFilter, r);
+        if (!mounted) return;
+        setState(() {
+          _data = r;
+          _offline = false;
+          _loading = false;
+        });
+        return;
+      } catch (_) {
+        // Gagal meski online → jatuh ke data tersimpan di bawah.
+      }
+    }
+
+    // Offline atau gagal: tampilkan data tersimpan bila ada (mode custom tak di-cache).
+    final cached = await LocalCache.loadHistory(_filter, _typeFilter);
     if (!mounted) return;
     setState(() {
-      _data = r;
+      _data = cached;
+      _offline = true;
       _loading = false;
     });
+    showAppToast(
+      context,
+      cached != null
+          ? 'Mode offline — menampilkan data terakhir'
+          : 'Tidak ada koneksi & belum ada data tersimpan',
+      error: cached == null,
+    );
   }
 
   void _setTypeFilter(TxType? t) {
@@ -126,6 +157,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _topBar(),
+            if (_offline && _data != null) _offlineBanner(),
             if (!context.watch<AppSession>().isAdmin)
               _staffBanner(),
             const SizedBox(height: 4),
@@ -171,6 +203,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _offlineBanner() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 4, 20, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.error.withValues(alpha: 0.25)),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.cloud_off_rounded, size: 16, color: AppColors.error),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Mode offline — menampilkan data terakhir yang tersimpan',
+              style: AppTheme.label(size: 11, color: AppColors.error),
+            ),
+          ),
+        ],
       ),
     );
   }

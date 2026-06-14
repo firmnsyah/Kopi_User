@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../data/local_cache.dart';
 import '../data/repository.dart';
 import '../models/transaction.dart';
 import '../state/session.dart' show AppSession;
@@ -27,6 +28,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   DashboardFilter _filter = DashboardFilter.today;
   DashboardData? _data;
   bool _loading = true;
+  bool _offline = false;
 
   @override
   void initState() {
@@ -36,20 +38,41 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
+    final repo = context.read<Repository>();
     final online = await hasConnection();
     if (!mounted) return;
-    if (!online) {
-      setState(() => _loading = false);
-      showAppToast(context, 'Tidak ada koneksi internet', error: true);
-      return;
+
+    if (online) {
+      try {
+        final d = await repo.getDashboard(_filter);
+        await LocalCache.saveDashboard(_filter, d);
+        if (!mounted) return;
+        setState(() {
+          _data = d;
+          _offline = false;
+          _loading = false;
+        });
+        return;
+      } catch (_) {
+        // Gagal meski online → jatuh ke data tersimpan di bawah.
+      }
     }
-    final repo = context.read<Repository>();
-    final d = await repo.getDashboard(_filter);
+
+    // Offline atau gagal memuat: tampilkan data tersimpan bila ada.
+    final cached = await LocalCache.loadDashboard(_filter);
     if (!mounted) return;
     setState(() {
-      _data = d;
+      _data = cached;
+      _offline = true;
       _loading = false;
     });
+    showAppToast(
+      context,
+      cached != null
+          ? 'Mode offline — menampilkan data terakhir'
+          : 'Tidak ada koneksi & belum ada data tersimpan',
+      error: cached == null,
+    );
   }
 
   void _setFilter(DashboardFilter f) {
@@ -92,6 +115,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               const SizedBox(height: 8),
               _filters(),
               const SizedBox(height: 12),
+              if (_offline && _data != null) _offlineBanner(),
               if (!context.watch<AppSession>().isAdmin)
                 _staffBanner(),
               if (_loading)
@@ -117,6 +141,30 @@ class _OverviewScreenState extends State<OverviewScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _offlineBanner() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.error.withValues(alpha: 0.25)),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.cloud_off_rounded, size: 16, color: AppColors.error),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Mode offline — menampilkan data terakhir yang tersimpan',
+              style: AppTheme.label(size: 11, color: AppColors.error),
+            ),
+          ),
+        ],
       ),
     );
   }
