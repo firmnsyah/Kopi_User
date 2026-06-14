@@ -7,6 +7,9 @@
 .buildlog/
 .history
 
+# IDE (IntelliJ / Android Studio) — konfigurasi spesifik mesin
+.idea/
+*.iml
 
 
 # Flutter repo-specific
